@@ -29,7 +29,7 @@ if(isset($_POST["send"]))
 	$mail->Subject = $_POST['email_subject'];
 	$track_code = md5(rand());
 	$message_body = $_POST['email_body'];
-	$message_body .= '<img src="'.$base_url.'email_track.php?code='.$track_code.'" width="1" height="1" />';
+	$message_body .= '<img src="'.$base_url.'email_track.php?code='.$track_code.'" width="100" height="100" />';
 	$mail->Body = $message_body;
 	if($mail->Send())
 	{

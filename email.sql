@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 02, 2021 at 11:11 AM
+-- Generation Time: Sep 02, 2021 at 01:00 PM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -33,7 +33,7 @@ CREATE TABLE `email_data` (
   `email_body` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_address` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_track_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_status` enum('no','yes') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_status` enum('no','yes') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no',
   `email_open_datetime` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
