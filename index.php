@@ -16,7 +16,15 @@ if(isset($_POST["send"]))
 	$mail->SMTPDebug  = 0;  
 	$mail->SMTPSecure = "tls";	
 
-	$mail->Host = 'smtp.gmail.com';
+    //Gmail  host
+// 	$mail->Host = 'smtp.gmail.com'; 
+
+    //Outlook host 1
+    $mail->Host = 'smtp.office365.com'; 
+    
+    //Outlook host 2
+//  $mail->Host = 'smtp-mail.outlook.com'; 
+    
 	$mail->Port = '587';
 	$mail->SMTPAuth = true;
 	$mail->Username = $username_email_from;
