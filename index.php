@@ -1,70 +1,12 @@
 <?php
-
+session_start();
 
 include_once('credentials.php');
 include_once('connect.php');
 $message = '';
-
-if(isset($_POST["send"]))
-{
-	require 'class/class.phpmailer.php';
-	$mail = new PHPMailer;
-	$mail->IsSMTP();
-	$mail->Mailer = "smtp";
-	// $mail->Host = 'smtpout.secureserver.net';
-
-	$mail->SMTPDebug  = 0;  
-	$mail->SMTPSecure = "tls";	
-
-    //Gmail  host
-// 	$mail->Host = 'smtp.gmail.com'; 
-
-    //Outlook host 1
-    $mail->Host = 'smtp.office365.com'; 
-    
-    //Outlook host 2
-//  $mail->Host = 'smtp-mail.outlook.com'; 
-    
-	$mail->Port = '587';
-	$mail->SMTPAuth = true;
-	$mail->Username = $username_email_from;
-	$mail->Password = $user_password;
-	$mail->From = $username_email_from;
-	$mail->FromName = $from_name;
-	$mail->AddAddress($_POST["receiver_email"]);
-	$mail->WordWrap = 50;
-	$mail->IsHTML(true);
-	$mail->Subject = $_POST['email_subject'];
-	$track_code = md5(rand());
-	$message_body = $_POST['email_body'];
-	$message_body .= '<img src="'.$base_url.'email_track.php?code='.$track_code.'" width="100" height="100" />';
-	$mail->Body = $message_body;
-	if($mail->Send())
-	{
-		$data = array(
-			':email_subject'			=>		$_POST["email_subject"],
-			':email_body'				=>		$_POST["email_body"],
-			':email_address'			=>		$_POST["receiver_email"],
-			':email_track_code'			=>		$track_code
-		);
-		$query = "
-		INSERT INTO email_data 
-		(email_subject, email_body, email_address, email_track_code) VALUES 
-		(:email_subject, :email_body, :email_address, :email_track_code)
-		";
-
-		$statement = $connect->prepare($query);
-		if($statement->execute($data))
-		{
-			$message = '<div class="alert alert-success" role="alert">Email Send Successfully</div>';
-		}
-	}
-	else
-	{
-		$message = '<div class="alert alert-danger" role="alert">Email Sending Error</div>';
-	}
-	
-
+if(isset($_SESSION['message'])){
+	$message = $_SESSION['message'];
+	unset($_SESSION['message']);
 }
 
 function getEmailData($connect)
@@ -119,6 +61,31 @@ function getEmailData($connect)
 	return $output;
 }
 
+function getEmailList($connect){
+	$query = "SELECT * FROM email_configs ";
+	$statement = $connect->prepare($query);
+	$statement->execute();
+	$result = $statement->fetchAll();
+	$total_row = $statement->rowCount();
+	$output = '';
+	if($total_row > 0)
+	{
+		foreach($result as $row)
+		{
+			$output .= '
+				<option value="'.$row['id'].'">'.$row['mail'].' - '.$row['mail_company'].'</option>
+			';
+		}
+	}
+	else
+	{
+		$output .= '
+				<option> No Emails</option>
+			';
+	}
+	return $output;
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -142,18 +109,29 @@ function getEmailData($connect)
 				echo $message;
 
 				?>
-				<form method="post">
+				<form action="send_email.php" method="post">
+				<div class="form-group">
+					<label>Select Email</label>
+					<select class="form-control" required name="selected_mail_id">
+						<option value="">Select Email</option>
+						<?php 
+			
+						echo getEmailList($connect);
+
+						?>
+					</select>
+				</div>
 				<div class="form-group">
 					<label>Enter Email Subject</label>
-					<input type="text" name="email_subject" class="form-control" required />
+					<input required type="text" name="email_subject" class="form-control" required />
 				</div>
 				<div class="form-group">
 					<label>Enter Receiver Email</label>
-					<input type="email" name="receiver_email" class="form-control" required />
+					<input required type="email" name="receiver_email" class="form-control" required />
 				</div>
 				<div class="form-group">
 					<label>Enter Email Body</label>
-					<textarea name="email_body" required rows="5" class="form-control"></textarea>
+					<textarea required name="email_body" required rows="5" class="form-control"></textarea>
 				</div>
 				<div class="form-group">
 					<input type="submit" name="send" class="btn btn-primary" value="Send Email" />
@@ -163,6 +141,9 @@ function getEmailData($connect)
 			</div>
 			
 			<br />
+			<h5>
+				<a class="btn btn-info" href="email_list.php">Email List</a>
+			</h5>
 			<h4 class="text-center">Email Read Status</h4>
 			<?php 
 			
