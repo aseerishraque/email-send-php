@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 04, 2021 at 07:43 AM
+-- Generation Time: Sep 19, 2021 at 10:54 AM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -42,7 +42,6 @@ CREATE TABLE `email_configs` (
 
 INSERT INTO `email_configs` (`id`, `mail_company`, `mail`, `mail_password`, `mail_host`, `mail_port`) VALUES
 (1, 'Outlook', 'aseerishraque@gmail.com', 'a5eer3444', 'smtp.office365.com', '587'),
-(2, 'Gmail', 'ishraqulhoque.asl@gmail.com', '1shraque13579', 'smtp.gmail.com', '587'),
 (5, 'Outlook', 'ishraque.asl@outlook.com', '4%ed#fD7Lhj%9VjR', 'smtp.office365.com', '587');
 
 -- --------------------------------------------------------
@@ -91,7 +90,7 @@ ALTER TABLE `email_configs`
 -- AUTO_INCREMENT for table `email_data`
 --
 ALTER TABLE `email_data`
-  MODIFY `email_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `email_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
