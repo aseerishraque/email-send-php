@@ -41,7 +41,7 @@ CREATE TABLE `email_configs` (
 --
 
 INSERT INTO `email_configs` (`id`, `mail_company`, `mail`, `mail_password`, `mail_host`, `mail_port`) VALUES
-(1, 'Outlook', 'aseerishraque@gmail.com', 'a5eer3444', 'smtp.office365.com', '587'),
+(1, 'Outlook', 'aseerishraque@gmail.com', 'sawdwqd', 'smtp.office365.com', '587'),
 (5, 'Outlook', 'ishraque.asl@outlook.com', '4%ed#fD7Lhj%9VjR', 'smtp.office365.com', '587');
 
 -- --------------------------------------------------------
